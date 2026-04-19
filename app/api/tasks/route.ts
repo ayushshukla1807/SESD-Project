@@ -7,8 +7,9 @@ export async function GET() {
   try {
     const tasks = taskService.getAllTasks();
     return NextResponse.json(tasks);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -21,7 +22,8 @@ export async function POST(request: Request) {
     const newTask = taskService.assignTask(adminId, title, projectId, developerId);
     
     return NextResponse.json(newTask, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }
