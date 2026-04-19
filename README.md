@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskFlow — Team Task & Project Management System
 
-## Getting Started
+> **SESD Course Project** · Full Stack Application  
+> Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📌 Overview
+
+TaskFlow is a modern, role-based project management platform designed for engineering teams. It demonstrates clean software engineering principles including OOP, design patterns (Singleton, Repository, Factory), and layered architecture.
+
+## 🏗️ Architecture
+
+```
+core/
+├── models/         # Domain Entities (User abstract class, Admin, Developer, Task, Project)
+├── repositories/   # Data Access Layer (IRepository<T> interface + implementations)
+├── services/       # Business Logic Layer (TaskService)
+└── db/             # Singleton In-Memory Database
+
+app/
+├── api/tasks/      # RESTful Controller Layer (Next.js Route Handlers)
+├── layout.tsx      # Root Layout
+└── page.tsx        # Dashboard UI (Sprint Board)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 OOP Principles Demonstrated
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Principle       | Implementation                                            |
+|----------------|-----------------------------------------------------------|
+| Abstraction    | `User` abstract class with `getPermissions()` contract    |
+| Inheritance    | `Admin` and `Developer` extend `User`                     |
+| Polymorphism   | Runtime dispatch of `getPermissions()` per role            |
+| Encapsulation  | Repository pattern hides data store internals              |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔧 Design Patterns
 
-## Learn More
+- **Singleton** — `Database.getInstance()` ensures a single data store
+- **Repository** — `IRepository<T>` generic interface decouples data access
+- **Service Layer** — Business rules enforced before data mutations
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## 📄 Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [idea.md](./idea.md) — Project scope & key features
+- [useCaseDiagram.md](./useCaseDiagram.md) — Use Case Diagram
+- [sequenceDiagram.md](./sequenceDiagram.md) — Sequence Diagram (end-to-end flow)
+- [classDiagram.md](./classDiagram.md) — Class Diagram
+- [ErDiagram.md](./ErDiagram.md) — ER Diagram
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📡 API Endpoints
+
+| Method  | Endpoint           | Description          |
+|---------|--------------------|----------------------|
+| GET     | `/api/tasks`       | List all tasks       |
+| POST    | `/api/tasks`       | Assign a new task    |
+| PATCH   | `/api/tasks/:id`   | Update task status   |
+
+## 👤 Author
+
+**Ayush Shukla**
