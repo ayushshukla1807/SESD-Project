@@ -1,7 +1,8 @@
 # TaskFlow — Team Task & Project Management System
 
 > **SESD Course Project** · Full Stack Application  
-> Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**
+> Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**  
+> **Live Demo:** [https://sesd-project-ayush.onrender.com](https://sesd-project-ayush.onrender.com)
 
 ---
 
@@ -11,18 +12,16 @@ TaskFlow is a modern, role-based project management platform designed for engine
 
 ## 🏗️ Architecture
 
-```
 core/
 ├── models/         # Domain Entities (User abstract class, Admin, Developer, Task, Project)
 ├── repositories/   # Data Access Layer (IRepository<T> interface + implementations)
-├── services/       # Business Logic Layer (TaskService)
+├── services/       # Business Logic Layer (TaskService, ProjectService)
 └── db/             # Singleton In-Memory Database
 
 app/
-├── api/tasks/      # RESTful Controller Layer (Next.js Route Handlers)
+├── api/            # RESTful Controller Layer (tasks, projects)
 ├── layout.tsx      # Root Layout
-└── page.tsx        # Dashboard UI (Sprint Board)
-```
+└── page.tsx        # Dashboard UI (Role-based Sprint Board)
 
 ## 🎯 OOP Principles Demonstrated
 
@@ -37,6 +36,7 @@ app/
 
 - **Singleton** — `Database.getInstance()` ensures a single data store
 - **Repository** — `IRepository<T>` generic interface decouples data access
+- **Dependency Injection** — Services receive repositories via constructor, enabling loose coupling
 - **Service Layer** — Business rules enforced before data mutations
 
 ## 🚀 Getting Started
@@ -63,6 +63,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | GET     | `/api/tasks`       | List all tasks       |
 | POST    | `/api/tasks`       | Assign a new task    |
 | PATCH   | `/api/tasks/:id`   | Update task status   |
+| GET     | `/api/projects`    | List all projects    |
+| POST    | `/api/projects`    | Create new project   |
 
 ## 👤 Author
 
