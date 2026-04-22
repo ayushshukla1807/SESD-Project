@@ -12,6 +12,7 @@ TaskFlow is a modern, role-based project management platform designed for engine
 
 ## 🏗️ Architecture
 
+```
 core/
 ├── models/         # Domain Entities (User abstract class, Admin, Developer, Task, Project)
 ├── repositories/   # Data Access Layer (IRepository<T> interface + implementations)
@@ -22,6 +23,7 @@ app/
 ├── api/            # RESTful Controller Layer (tasks, projects)
 ├── layout.tsx      # Root Layout
 └── page.tsx        # Dashboard UI (Role-based Sprint Board)
+```
 
 ## 🎯 OOP Principles Demonstrated
 
@@ -50,11 +52,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## 📄 Documentation
 
-- [idea.md](./idea.md) — Project scope & key features
-- [useCaseDiagram.md](./useCaseDiagram.md) — Use Case Diagram
-- [sequenceDiagram.md](./sequenceDiagram.md) — Sequence Diagram (end-to-end flow)
-- [classDiagram.md](./classDiagram.md) — Class Diagram
-- [ErDiagram.md](./ErDiagram.md) — ER Diagram
+- [Idea.md](./Idea.md) — Project scope & key features
+- [UseCaseDiagram.md](./UseCaseDiagram.md) — Use Case Diagram
+- [SequenceDiagram.md](./SequenceDiagram.md) — Sequence Diagram (end-to-end flow)
+- [ClassDiagram.md](./ClassDiagram.md) — Class Diagram
+- [ERDiagram.md](./ERDiagram.md) — ER Diagram
 
 ## 📡 API Endpoints
 

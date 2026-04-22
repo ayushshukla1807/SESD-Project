@@ -7,16 +7,15 @@ classDiagram
         +String id
         +String name
         +String role
-        +login()
+        +getPermissions() String[]
     }
     
     class Admin {
-        +createProject()
-        +assignTask()
+        +getPermissions() String[]
     }
     
     class Developer {
-        +updateTaskStatus()
+        +getPermissions() String[]
     }
 
     User <|-- Admin
@@ -26,28 +25,52 @@ classDiagram
         +String id
         +String title
         +String status
+        +String projectId
         +String developerId
+        +updateStatus(status)
     }
 
-    class ITaskRepository {
+    class Project {
+        +String id
+        +String title
+        +String adminId
+    }
+
+    class IRepository~T~ {
         <<interface>>
-        +save(Task task) Task
-        +findAll() List~Task~
+        +findById(id) T
+        +findAll() T[]
+        +save(entity) T
     }
     
-    class TaskRepositoryImpl {
-        -List~Task~ store
-        +save(Task task) Task
-        +findAll() List~Task~
+    class TaskRepository {
+        +save(Task) Task
+        +findAll() Task[]
+    }
+
+    class ProjectRepository {
+        +save(Project) Project
+        +findAll() Project[]
     }
 
     class TaskService {
-        -ITaskRepository repository
-        +createTask(TaskDTO dto)
+        -ITaskRepository taskRepo
+        -IUserRepository userRepo
+        +assignTask()
+        +updateTaskStatus()
     }
 
-    ITaskRepository <|.. TaskRepositoryImpl
-    TaskService "1" *-- "1" ITaskRepository : uses
-    Admin "1" --> "*" Task : assigns
-    Developer "1" --> "*" Task : completes
+    class ProjectService {
+        -IProjectRepository projectRepo
+        -IUserRepository userRepo
+        +createProject()
+        +getAllProjects()
+    }
+
+    IRepository <|.. TaskRepository
+    IRepository <|.. ProjectRepository
+    TaskService "1" *-- "1" TaskRepository : uses
+    ProjectService "1" *-- "1" ProjectRepository : uses
+    Admin "1" --> "*" Project : "manages through ProjectService"
+    Developer "1" --> "*" Task : "updates through TaskService"
 ```
