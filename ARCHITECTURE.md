@@ -1,9 +1,9 @@
-# TaskFlow Architecture Deep Dive
+# Synapse Architecture Deep Dive
 
-This document outlines the architectural evolution of TaskFlow over the past 6 months, transitioning from a rapid prototype to a scalable enterprise-grade engineering management platform.
+This document outlines the architectural evolution of Synapse over the past 6 months, transitioning from a rapid prototype to a scalable enterprise-grade engineering management platform.
 
 ## 1. Domain-Driven Design (DDD)
-TaskFlow is structured around three primary domains:
+Synapse is structured around three primary domains:
 - **Identity & Access**: Managed via the `User` abstract model with role-based polymorphism.
 - **Project Governance**: Handled by the `Project` entity and associated `ProjectService`.
 - **Execution**: The core `Task` engine with state machine logic.

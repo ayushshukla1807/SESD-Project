@@ -1,4 +1,4 @@
-# Development Log: TaskFlow
+# Development Log: Synapse
 
 ## Project Roadmap & Milestones
 

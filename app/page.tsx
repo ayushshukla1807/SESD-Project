@@ -133,14 +133,14 @@ export default function Home() {
         <div className="space-y-1">
           <div className="flex items-center gap-3">
             <h1 className="text-4xl font-black tracking-tight text-white">
-              TaskFlow <span className="text-blue-500 text-lg align-top font-mono">v2.4</span>
+              Synapse <span className="text-violet-500 text-lg align-top font-mono">v4.1.2</span>
             </h1>
-            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-500/20">
+            <span className="px-2 py-0.5 bg-violet-500/10 text-violet-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-violet-500/20">
               Enterprise
             </span>
           </div>
           <p className="text-slate-500 text-sm max-w-lg">
-            Production-grade engineering management. Logged in as <span className="text-slate-300 font-bold underline decoration-blue-500/50 cursor-pointer" onClick={toggleUser}>@{currentUser.name}</span>.
+            Production-grade engineering management. Logged in as <span className="text-slate-300 font-bold underline decoration-violet-500/50 cursor-pointer" onClick={toggleUser}>@{currentUser.name}</span>.
           </p>
         </div>
 
@@ -165,7 +165,7 @@ export default function Home() {
           {currentUser.role === 'Admin' && (
             <button 
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xl shadow-blue-600/20 active:scale-95 flex items-center gap-2"
+              className="bg-violet-600 hover:bg-violet-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xl shadow-violet-600/20 active:scale-95 flex items-center gap-2"
             >
               <span className="text-lg">+</span> Create Task
             </button>
@@ -194,7 +194,7 @@ export default function Home() {
                       >
                         <p className="text-sm font-semibold text-slate-200 mb-4 group-hover:text-white">{task.title}</p>
                         <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
-                          <span className="text-[10px] font-bold text-blue-500 uppercase tracking-tighter">
+                          <span className="text-[10px] font-bold text-violet-500 uppercase tracking-tighter">
                             {projects.find(p => p.id === task.projectId)?.title || 'Core'}
                           </span>
                           <div className="flex items-center gap-2">
@@ -230,7 +230,7 @@ export default function Home() {
                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Description</label>
                 <input 
                   autoFocus required
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-5 py-4 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-5 py-4 text-white focus:ring-2 focus:ring-violet-500/50 outline-none transition-all"
                   value={newTask.title}
                   onChange={(e) => setNewTask(prev => ({ ...prev, title: e.target.value }))}
                 />

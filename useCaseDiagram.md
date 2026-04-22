@@ -1,4 +1,4 @@
-# TaskFlow: System Use Case Diagram
+# Synapse: System Use Case Diagram
 
 ```mermaid
 flowchart LR

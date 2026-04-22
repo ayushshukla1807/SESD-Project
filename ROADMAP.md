@@ -1,4 +1,4 @@
-# TaskFlow Product Roadmap
+# Synapse Product Roadmap
 
 Tracking the 6-month journey of engineering management excellence.
 

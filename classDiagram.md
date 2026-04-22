@@ -1,4 +1,4 @@
-# TaskFlow: Class Diagram
+# Synapse: Class Diagram
 
 ```mermaid
 classDiagram
