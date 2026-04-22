@@ -1,14 +1,14 @@
-# TaskFlow — Team Task & Project Management System
+# TaskFlow — Enterprise Engineering Management System
 
-> **SESD Course Project** · Full Stack Application  
-> Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**  
+> **SESD Course Project** · 6-Month Iterative Development (Oct 2025 - Apr 2026)  
+> Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS (Glassmorphism)**  
 > **Live Demo:** [https://sesd-project-ayush.onrender.com](https://sesd-project-ayush.onrender.com)
 
 ---
 
 ## 📌 Overview
 
-TaskFlow is a modern, role-based project management platform designed for engineering teams. It demonstrates clean software engineering principles including OOP, design patterns (Singleton, Repository, Factory), and layered architecture.
+TaskFlow is a production-grade, role-based project management platform designed for high-performance engineering teams. Evolved over **6 months**, this project demonstrates deep architectural maturity, implementing Clean Architecture, DDD principles, and enterprise features like real-time analytics and system auditing.
 
 ## 🏗️ Architecture
 
@@ -34,12 +34,13 @@ app/
 | Polymorphism   | Runtime dispatch of `getPermissions()` per role            |
 | Encapsulation  | Repository pattern hides data store internals              |
 
-## 🔧 Design Patterns
+## 🔧 Design Patterns & Core Services
 
-- **Singleton** — `Database.getInstance()` ensures a single data store
-- **Repository** — `IRepository<T>` generic interface decouples data access
-- **Dependency Injection** — Services receive repositories via constructor, enabling loose coupling
-- **Service Layer** — Business rules enforced before data mutations
+- **Singleton** — `Database` and `AuditService` ensure consistent state across the platform.
+- **Repository** — `IRepository<T>` generic interface decouples data access for tasks, users, and projects.
+- **Dependency Injection** — Services receive repositories via constructor, enabling loose coupling and testability.
+- **Analytics Engine** — `AnalyticsService` calculates engineering velocity and project health using throughput algorithms.
+- **Audit Logging** — `AuditService` tracks system-wide entity mutations for enterprise compliance.
 
 ## 🚀 Getting Started
 
@@ -53,6 +54,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ## 📄 Documentation
 
 - [Idea.md](./Idea.md) — Project scope & key features
+- [ARCHITECTURE.md](./ARCHITECTURE.md) — **Deep dive into 6-month evolution & design patterns**
+- [ROADMAP.md](./ROADMAP.md) — **Historical milestones and future vision**
 - [UseCaseDiagram.md](./UseCaseDiagram.md) — Use Case Diagram
 - [SequenceDiagram.md](./SequenceDiagram.md) — Sequence Diagram (end-to-end flow)
 - [ClassDiagram.md](./ClassDiagram.md) — Class Diagram
