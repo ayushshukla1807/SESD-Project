@@ -1,4 +1,4 @@
-# TaskFlow: Sequence Diagram
+# Synapse: Sequence Diagram
 
 ```mermaid
 sequenceDiagram

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'TaskFlow',
+  title: 'Synapse',
   description: 'SESD Full Stack Task Management Project',
 };
 
@@ -17,7 +17,7 @@ export default function RootLayout({
         <header className="border-b border-white/10 p-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-              TaskFlow
+              Synapse
             </h1>
             <nav className="space-x-4 text-sm font-medium text-slate-300">
               <span>Admin Board</span>

@@ -1,4 +1,4 @@
-# TaskFlow — Enterprise Engineering Management System
+# Synapse — Enterprise Engineering Management System
 
 > **SESD Course Project** · 6-Month Iterative Development (Oct 2025 - Apr 2026)  
 > Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS (Glassmorphism)**  
@@ -8,7 +8,7 @@
 
 ## 📌 Overview
 
-TaskFlow is a production-grade, role-based project management platform designed for high-performance engineering teams. Evolved over **6 months**, this project demonstrates deep architectural maturity, implementing Clean Architecture, DDD principles, and enterprise features like real-time analytics and system auditing.
+Synapse is a production-grade, role-based project management platform designed for high-performance engineering teams. Evolved over **6 months**, this project demonstrates deep architectural maturity, implementing Clean Architecture, DDD principles, and enterprise features like real-time analytics and system auditing.
 
 ## 🏗️ Architecture
 

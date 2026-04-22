@@ -1,4 +1,4 @@
-# TaskFlow: Entity-Relationship Diagram
+# Synapse: Entity-Relationship Diagram
 
 ```mermaid
 erDiagram

@@ -15,7 +15,7 @@ export class NotificationService {
     this.notifications = [
       {
         id: '1',
-        title: 'Welcome to TaskFlow',
+        title: 'Welcome to Synapse',
         message: 'Your workspace is ready. Check the documentation for core architecture details.',
         type: 'INFO',
         read: false,

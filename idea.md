@@ -1,10 +1,10 @@
-# TaskFlow: Team Task & Project Management System
+# Synapse: Team Task & Project Management System
 
 ## Project Idea
-TaskFlow is a modern, full-stack event and project management platform designed specifically to streamline engineering team workflows. It provides targeted role-based access for Administrators (who manage overall project scopes and user permissions) and Developers (who execute on technical tickets).
+Synapse is a modern, full-stack event and project management platform designed specifically to streamline engineering team workflows. It provides targeted role-based access for Administrators (who manage overall project scopes and user permissions) and Developers (who execute on technical tickets).
 
 ## Scope
-The scope of TaskFlow includes:
+The scope of Synapse includes:
 1. **User Authentication & Authorization**: Distinct access controls.
 2. **Project Creation**: Administrators can initialize new projects with timelines.
 3. **Task Assignment**: Tasks are created under projects and assigned to specific Developers.

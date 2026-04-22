@@ -18,10 +18,10 @@ export default function AnalyticsView({ stats, weeklyActivity }: AnalyticsViewPr
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: 'Active Projects', value: stats.totalProjects, color: 'text-blue-400' },
-          { label: 'Total Tickets', value: stats.totalTasks, color: 'text-purple-400' },
-          { label: 'Completion Velocity', value: `${stats.completedPercentage.toFixed(1)}%`, color: 'text-emerald-400' },
-          { label: 'Active Contributors', value: stats.activeDevelopers, color: 'text-amber-400' },
+          { label: 'Active Projects', value: stats.totalProjects, color: 'text-indigo-400' },
+          { label: 'Total Tickets', value: stats.totalTasks, color: 'text-violet-400' },
+          { label: 'Completion Velocity', value: `${stats.completedPercentage.toFixed(1)}%`, color: 'text-fuchsia-400' },
+          { label: 'Active Contributors', value: stats.activeDevelopers, color: 'text-rose-400' },
         ].map((stat, i) => (
           <div key={i} className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm hover:border-slate-700 transition-colors">
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
@@ -38,10 +38,10 @@ export default function AnalyticsView({ stats, weeklyActivity }: AnalyticsViewPr
             {weeklyActivity.map((day, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-3 group">
                 <div 
-                  className="w-full bg-gradient-to-t from-blue-600/20 to-blue-500/60 rounded-t-lg transition-all duration-500 group-hover:to-blue-400 group-hover:from-blue-500/40"
+                  className="w-full bg-gradient-to-t from-violet-600/20 to-violet-500/60 rounded-t-lg transition-all duration-500 group-hover:to-violet-400 group-hover:from-violet-500/40"
                   style={{ height: `${(day.tasks / maxTasks) * 100}%` }}
                 >
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity -top-8 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded absolute">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity -top-8 left-1/2 -translate-x-1/2 bg-violet-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded absolute">
                     {day.tasks}
                   </div>
                 </div>
