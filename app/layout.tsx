@@ -13,15 +13,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-950 text-slate-50 min-h-screen">
-        <header className="border-b border-white/10 p-4">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-              Synapse
-            </h1>
-            <nav className="space-x-4 text-sm font-medium text-slate-300">
-              <span>Admin Board</span>
-              <span>Developer View</span>
+      <body className="antialiased">
+        <header className="border-b border-white/5 bg-slate-950/50 backdrop-blur-md sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-lg shadow-lg shadow-violet-500/20" />
+              <h1 className="text-xl font-black tracking-tight text-white">
+                Synapse
+              </h1>
+            </div>
+            <nav className="flex items-center gap-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              <span className="hover:text-violet-400 cursor-pointer transition-colors">Infrastructure</span>
+              <span className="hover:text-violet-400 cursor-pointer transition-colors">Deployment</span>
+              <span className="hover:text-violet-400 cursor-pointer transition-colors">Team</span>
             </nav>
           </div>
         </header>
