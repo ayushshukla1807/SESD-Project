@@ -3,8 +3,10 @@ import { UserRepository } from '../repositories/UserRepository';
 import { Task, TaskStatus } from '../models/Task';
 
 export class TaskService {
-  private taskRepo = new TaskRepository();
-  private userRepo = new UserRepository();
+  constructor(
+    private taskRepo: TaskRepository = new TaskRepository(),
+    private userRepo: UserRepository = new UserRepository()
+  ) {}
 
   public assignTask(adminId: string, title: string, projectId: string, developerId: string): Task {
     const admin = this.userRepo.findById(adminId);
