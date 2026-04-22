@@ -1,8 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import AnalyticsView from './components/AnalyticsView';
+import ActivityFeed from './components/ActivityFeed';
 
 type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
+type ViewType = 'board' | 'analytics';
 
 interface TaskData {
   id: string;
@@ -20,25 +23,34 @@ interface ProjectData {
 export default function Home() {
   const [tasks, setTasks] = useState<TaskData[]>([]);
   const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeView, setActiveView] = useState<ViewType>('board');
   
-  // Simulated User Session
   const [currentUser, setCurrentUser] = useState({ id: 'admin1', name: 'Super Admin', role: 'Admin' });
   const [showModal, setShowModal] = useState(false);
   const [newTask, setNewTask] = useState({ title: '', projectId: '', developerId: 'dev1' });
 
   const fetchData = async () => {
     try {
-      const [taskRes, projectRes] = await Promise.all([
+      const [taskRes, projectRes, analyticsRes, auditRes] = await Promise.all([
         fetch('/api/tasks'),
-        fetch('/api/projects')
+        fetch('/api/projects'),
+        fetch('/api/analytics'),
+        fetch('/api/audit')
       ]);
-      const [taskData, projectData] = await Promise.all([
+      const [taskData, projectData, analyticsData, auditData] = await Promise.all([
         taskRes.json(),
-        projectRes.json()
+        projectRes.json(),
+        analyticsRes.json(),
+        auditRes.json()
       ]);
       setTasks(taskData);
       setProjects(projectData);
+      setAnalytics(analyticsData);
+      setAuditLogs(auditData);
+      
       if (projectData.length > 0 && !newTask.projectId) {
         setNewTask(prev => ({ ...prev, projectId: projectData[0].id }));
       }
@@ -51,6 +63,8 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 10000); // Polling for "live" feel
+    return () => clearInterval(interval);
   }, []);
 
   const handleCreateTask = async (e: React.FormEvent) => {
@@ -59,10 +73,7 @@ export default function Home() {
       await fetch('/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          adminId: currentUser.id,
-          ...newTask
-        })
+        body: JSON.stringify({ adminId: currentUser.id, ...newTask })
       });
       setShowModal(false);
       setNewTask(prev => ({ ...prev, title: '' }));
@@ -74,7 +85,7 @@ export default function Home() {
 
   const updateStatus = async (id: string, currentStatus: TaskStatus) => {
     if (currentUser.role !== 'Developer') {
-      alert('Only Developers can move tasks on the board for this demo.');
+      alert('Simulation: Only Developers can modify task states in this release.');
       return;
     }
 
@@ -95,181 +106,157 @@ export default function Home() {
 
   const toggleUser = () => {
     if (currentUser.role === 'Admin') {
-      setCurrentUser({ id: 'dev1', name: 'Alice (Dev)', role: 'Developer' });
+      setCurrentUser({ id: 'dev1', name: 'Alice (Senior Dev)', role: 'Developer' });
     } else {
       setCurrentUser({ id: 'admin1', name: 'Super Admin', role: 'Admin' });
     }
   };
 
-  const statusColors: Record<TaskStatus, string> = {
-    'TODO': 'from-amber-500/10 to-amber-600/5 border-amber-500/20',
-    'IN_PROGRESS': 'from-blue-500/10 to-blue-600/5 border-blue-500/20',
-    'DONE': 'from-emerald-500/10 to-emerald-600/5 border-emerald-500/20',
-  };
-
-  const statusDots: Record<TaskStatus, string> = {
-    'TODO': 'bg-amber-400',
-    'IN_PROGRESS': 'bg-blue-400 animate-pulse',
-    'DONE': 'bg-emerald-400',
-  };
-
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto" />
-          <p className="text-slate-400 text-sm tracking-wider">Loading Workspace...</p>
+      <div className="flex items-center justify-center min-h-[80vh]">
+        <div className="text-center space-y-6">
+          <div className="relative w-16 h-16 mx-auto">
+            <div className="absolute inset-0 border-4 border-blue-500/20 rounded-full" />
+            <div className="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin" />
+          </div>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.3em] animate-pulse">Syncing Engine...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-            TaskFlow Dashboard
-          </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            Logged in as <span className="text-blue-400 font-medium">@{currentUser.name}</span> ({currentUser.role})
+    <div className="max-w-7xl mx-auto space-y-10 py-6 px-4 sm:px-6 lg:px-8">
+      {/* Premium Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b border-slate-800/50">
+        <div className="space-y-1">
+          <div className="flex items-center gap-3">
+            <h1 className="text-4xl font-black tracking-tight text-white">
+              TaskFlow <span className="text-blue-500 text-lg align-top font-mono">v2.4</span>
+            </h1>
+            <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-500/20">
+              Enterprise
+            </span>
+          </div>
+          <p className="text-slate-500 text-sm max-w-lg">
+            Production-grade engineering management. Logged in as <span className="text-slate-300 font-bold underline decoration-blue-500/50 cursor-pointer" onClick={toggleUser}>@{currentUser.name}</span>.
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={toggleUser}
-            className="px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
-          >
-            Switch to {currentUser.role === 'Admin' ? 'Developer' : 'Admin'}
-          </button>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-slate-900 p-1 rounded-xl border border-slate-800 flex">
+            <button 
+              onClick={() => setActiveView('board')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeView === 'board' ? 'bg-slate-800 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+            >
+              Board
+            </button>
+            <button 
+              onClick={() => setActiveView('analytics')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeView === 'analytics' ? 'bg-slate-800 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+            >
+              Analytics
+            </button>
+          </div>
           
+          <div className="h-8 w-[1px] bg-slate-800 mx-2 hidden md:block" />
+
           {currentUser.role === 'Admin' && (
             <button 
               onClick={() => setShowModal(true)}
-              className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-5 py-2 rounded-lg font-medium transition-all shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xl shadow-blue-600/20 active:scale-95 flex items-center gap-2"
             >
-              <span className="text-xl leading-none">+</span> New Task
+              <span className="text-lg">+</span> Create Task
             </button>
           )}
         </div>
       </div>
 
-      {/* Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {(['TODO', 'IN_PROGRESS', 'DONE'] as TaskStatus[]).map((statusColumn) => {
-          const columnTasks = tasks.filter(t => t.status === statusColumn);
-          return (
-            <div key={statusColumn} className="space-y-4">
-              {/* Column Header */}
-              <div className="flex items-center gap-3 px-1">
-                <span className={`w-2.5 h-2.5 rounded-full ${statusDots[statusColumn]}`} />
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
-                  {statusColumn.replace('_', ' ')}
-                </h3>
-                <span className="ml-auto bg-slate-800 text-slate-500 px-2.5 py-0.5 rounded-full text-[10px] font-mono border border-slate-700">
-                  {columnTasks.length}
-                </span>
-              </div>
-
-              {/* Column Body */}
-              <div className={`bg-gradient-to-b ${statusColors[statusColumn]} border border-slate-800/40 rounded-2xl p-4 min-h-[450px] space-y-4 backdrop-blur-sm`}>
-                {columnTasks.map(task => (
-                  <div
-                    key={task.id}
-                    className="bg-slate-900/60 border border-slate-700/50 p-4 rounded-xl shadow-sm hover:border-blue-500/50 hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer group hover:-translate-y-1"
-                    onClick={() => updateStatus(task.id, task.status)}
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <p className="font-medium text-slate-200 leading-snug group-hover:text-white transition-colors">{task.title}</p>
-                    </div>
-                    
-                    <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-[10px] text-slate-500 font-mono uppercase tracking-tighter">Project</span>
-                        <span className="text-[11px] text-blue-400 font-medium">
-                          {projects.find(p => p.id === task.projectId)?.title || 'TaskFlow Core'}
-                        </span>
-                      </div>
-                      <div className="flex flex-col items-end gap-0.5">
-                        <span className="text-[10px] text-slate-500 font-mono uppercase tracking-tighter">Assignee</span>
-                        <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded text-[10px] border border-slate-700">
-                          {task.developerId || 'Unassigned'}
-                        </span>
-                      </div>
-                    </div>
+      {activeView === 'board' ? (
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Columns */}
+          <div className="xl:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(['TODO', 'IN_PROGRESS', 'DONE'] as TaskStatus[]).map((col) => {
+              const colTasks = tasks.filter(t => t.status === col);
+              return (
+                <div key={col} className="space-y-5">
+                  <div className="flex items-center justify-between px-2">
+                    <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.25em]">{col.replace('_', ' ')}</h3>
+                    <span className="bg-slate-900 border border-slate-800 text-slate-500 px-2 py-0.5 rounded text-[10px] font-mono">{colTasks.length}</span>
                   </div>
-                ))}
-                {columnTasks.length === 0 && (
-                  <div className="flex items-center justify-center h-48 text-[11px] text-slate-600 uppercase tracking-widest italic opacity-50">
-                    Empty Queue
+                  <div className="bg-slate-900/30 border border-slate-800/40 rounded-3xl p-3 min-h-[600px] space-y-4">
+                    {colTasks.map(task => (
+                      <div
+                        key={task.id}
+                        onClick={() => updateStatus(task.id, task.status)}
+                        className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl shadow-sm hover:border-blue-500/40 transition-all cursor-pointer group"
+                      >
+                        <p className="text-sm font-semibold text-slate-200 mb-4 group-hover:text-white">{task.title}</p>
+                        <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
+                          <span className="text-[10px] font-bold text-blue-500 uppercase tracking-tighter">
+                            {projects.find(p => p.id === task.projectId)?.title || 'Core'}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[8px] font-bold text-slate-400">
+                              {task.developerId?.charAt(0).toUpperCase() || '?'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                </div>
+              );
+            })}
+          </div>
 
-      {/* New Task Modal */}
+          {/* Activity Sidebar */}
+          <div className="space-y-6">
+             <ActivityFeed logs={auditLogs} />
+          </div>
+        </div>
+      ) : (
+        <AnalyticsView stats={analytics?.stats} weeklyActivity={analytics?.weeklyActivity} />
+      )}
+
+      {/* Modal - Kept minimal for code brevity */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl p-8 shadow-2xl animate-in zoom-in-95 duration-200">
-            <h3 className="text-xl font-bold mb-6 text-white">Initialize Technical Task</h3>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-10 shadow-2xl animate-in zoom-in-95">
+            <h2 className="text-2xl font-bold text-white mb-8">Initialize Technical Ticket</h2>
             <form onSubmit={handleCreateTask} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Task Title</label>
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Description</label>
                 <input 
-                  autoFocus
-                  required
-                  placeholder="e.g. Implement Repository Pattern"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-slate-600"
+                  autoFocus required
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-5 py-4 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
                   value={newTask.title}
                   onChange={(e) => setNewTask(prev => ({ ...prev, title: e.target.value }))}
                 />
               </div>
-              
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Project Scope</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Scope</label>
                   <select 
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-white outline-none"
                     value={newTask.projectId}
                     onChange={(e) => setNewTask(prev => ({ ...prev, projectId: e.target.value }))}
                   >
-                    {projects.map(p => (
-                      <option key={p.id} value={p.id}>{p.title}</option>
-                    ))}
+                    {projects.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Assignee</label>
-                  <select 
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                    value={newTask.developerId}
-                    onChange={(e) => setNewTask(prev => ({ ...prev, developerId: e.target.value }))}
-                  >
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Lead</label>
+                  <select className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-white outline-none">
                     <option value="dev1">Alice (dev1)</option>
                     <option value="dev2">Bob (dev2)</option>
                   </select>
                 </div>
               </div>
-
-              <div className="flex gap-3 pt-4">
-                <button 
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 px-4 py-3 rounded-lg text-slate-400 font-medium hover:bg-slate-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-lg font-bold shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
-                >
-                  Create Task
-                </button>
+              <div className="flex gap-4 pt-6">
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-4 text-slate-400 font-bold text-sm">Dismiss</button>
+                <button type="submit" className="flex-1 bg-white text-black py-4 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">Finalize Task</button>
               </div>
             </form>
           </div>
