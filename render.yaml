@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: synapse-sesd
-    runtime: node
+    name: sesd-project-ayush
+    env: node
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
