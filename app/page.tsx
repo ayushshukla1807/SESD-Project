@@ -151,16 +151,16 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 p-2 bg-slate-900/40 rounded-2xl border border-white/5 backdrop-blur-sm">
+        <div className="flex items-center gap-2 p-1.5 bg-white/[0.03] rounded-2xl border border-white/10 backdrop-blur-md">
           <button 
             onClick={() => setActiveView('board')}
-            className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeView === 'board' ? 'bg-violet-600 text-white shadow-xl shadow-violet-600/30' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${activeView === 'board' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-500 hover:text-slate-300'}`}
           >
             Board
           </button>
           <button 
             onClick={() => setActiveView('analytics')}
-            className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeView === 'analytics' ? 'bg-violet-600 text-white shadow-xl shadow-violet-600/30' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${activeView === 'analytics' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-500 hover:text-slate-300'}`}
           >
             Analytics
           </button>
@@ -174,13 +174,16 @@ export default function Home() {
             {(['TODO', 'IN_PROGRESS', 'DONE'] as TaskStatus[]).map((col) => {
               const colTasks = tasks.filter(t => t.status === col);
               return (
-                <div key={col} className="space-y-6">
-                  <div className="flex items-center justify-between px-3">
+                <div key={col} className="space-y-6 bg-white/[0.02] border border-white/5 rounded-3xl p-6 relative overflow-hidden group/col">
+                  {/* Subtle Top Glow */}
+                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r opacity-50 ${col === 'DONE' ? 'from-emerald-500/0 via-emerald-500 to-emerald-500/0' : col === 'IN_PROGRESS' ? 'from-indigo-500/0 via-indigo-500 to-indigo-500/0' : 'from-slate-500/0 via-slate-500 to-slate-500/0'}`} />
+                  
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full ${col === 'DONE' ? 'bg-emerald-500' : col === 'IN_PROGRESS' ? 'bg-violet-500' : 'bg-slate-700'}`} />
-                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">{col.replace('_', ' ')}</h3>
+                      <div className={`w-2 h-2 rounded-full ${col === 'DONE' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : col === 'IN_PROGRESS' ? 'bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]' : 'bg-slate-500 shadow-[0_0_8px_rgba(100,116,139,0.8)]'}`} />
+                      <h3 className="text-xs font-bold text-slate-300 uppercase tracking-[0.15em]">{col.replace('_', ' ')}</h3>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-600">{colTasks.length}</span>
+                    <span className="text-[10px] font-mono text-slate-500 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">{colTasks.length}</span>
                   </div>
                   
                   <div className="space-y-4">
@@ -188,30 +191,32 @@ export default function Home() {
                       <div
                         key={task.id}
                         onClick={() => updateStatus(task.id, task.status)}
-                        className="glass-card p-6 rounded-3xl group cursor-pointer"
+                        className="glass-card p-5 rounded-2xl group cursor-pointer border border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all duration-300"
                       >
-                        <p className="text-sm font-bold text-slate-100 mb-6 group-hover:text-violet-300 transition-colors leading-relaxed">{task.title}</p>
+                        <p className="text-sm font-semibold text-slate-100 mb-5 group-hover:text-indigo-300 transition-colors leading-relaxed">{task.title}</p>
                         
-                        <div className="flex items-center justify-between pt-5 border-t border-white/5">
-                          <div className="flex flex-col gap-1">
-                            <span className="text-[9px] font-black text-slate-600 uppercase tracking-tighter">Scope</span>
-                            <span className="text-[10px] font-bold text-indigo-400">
+                        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Scope</span>
+                            <span className="text-[10px] font-semibold text-indigo-400">
                               {projects.find(p => p.id === task.projectId)?.title || 'Core'}
                             </span>
                           </div>
-                          <div className="w-8 h-8 rounded-xl bg-slate-800/50 border border-white/5 flex items-center justify-center text-[10px] font-black text-slate-500 group-hover:border-violet-500/50 transition-colors">
+                          <div className="w-7 h-7 rounded-lg bg-slate-800 border border-white/10 flex items-center justify-center text-[9px] font-bold text-slate-400 group-hover:border-indigo-500/50 group-hover:text-indigo-300 transition-colors">
                             {task.developerId?.charAt(0).toUpperCase() || '?'}
                           </div>
                         </div>
                       </div>
                     ))}
                     {colTasks.length === 0 && (
-                      <div className="h-32 border-2 border-dashed border-white/5 rounded-3xl flex items-center justify-center opacity-30">
-                        <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest italic">Waiting for Input</span>
+                      <div className="h-28 border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-2 opacity-50 bg-white/[0.01]">
+                        <span className="text-lg opacity-50">📋</span>
+                        <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Empty Queue</span>
                       </div>
                     )}
                   </div>
                 </div>
+
               );
             })}
           </div>
